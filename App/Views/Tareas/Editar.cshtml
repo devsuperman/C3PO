@@ -3,23 +3,31 @@
     ViewData["Title"] = "Editar Tarea";
 }
 
-<div class="d-flex">
-    <h1 class='flex-grow-1'>
-        <i class="fas fa-business-time"></i>
-        @ViewData["Title"]
-    </h1>
-</div>
+<h1 class='flex-grow-1'>
+    <i class="bi bi-list-task"></i>
+    @ViewData["Title"]
+</h1>
 <hr>
 
-<form asp-action="Editar" method="post">
+<form asp-action="Editar">
+
+    <input type="hidden" asp-for="Id" />
+
+    <partial name="_Form" />
+
     
-    <input type="hidden" asp-for="Id"/>
+    <div class="d-flex justify-content-end">
+        
+        <a asp-action="Index" class="btn btn-light"> 
+            <i class="bi bi-arrow-left"></i>
+            Volver
+        </a>
 
-    <partial name="_Form"/>
+        <button type="submit" class="btn btn-primary ms-2"> 
+            <i class="bi bi-check-lg"></i>
+            Guardar Tarea
+        </button>
 
-    <div class="form-group mt-5">
-        <a asp-action="Index" class="btn btn-light"> Cancelar</a>
-        <button type="submit" class="btn btn-primary"> Salvar</button>
     </div>
 
 </form>
