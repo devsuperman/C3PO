@@ -1,0 +1,36 @@
+@model Tarea
+
+<div class="form-group mb-2">
+    <label asp-for="HombreClave"></label>
+    <input class="form-control" asp-for="HombreClave" required>
+    <span asp-validation-for='HombreClave' class='text-danger'></span>
+</div>
+
+<div class="form-group mb-2">
+    <label asp-for="Descripcion"></label>
+    <input class="form-control" asp-for="Descripcion" required>
+    <span asp-validation-for='Descripcion' class='text-danger'></span>
+</div>
+
+<div class="form-group mb-2">
+    <label asp-for="Telefono"></label>
+    <input class="form-control" asp-for="Telefono" required>
+    <span asp-validation-for='Telefono' class='text-danger'></span>
+</div>
+
+
+<div class='row'>
+
+    <div class="form-group mb-2 col-6">
+        <label asp-for="Inicio"></label>
+        <input class="form-control" asp-for="Inicio" required>
+        <span asp-validation-for='Inicio' class='text-danger'></span>
+    </div>
+
+    <div class="form-group mb-2 col-6">
+        <label asp-for="Fim"></label>
+        <input class="form-control" asp-for="Fim" required >
+        <span asp-validation-for='Fim' class='text-danger'></span>
+    </div>
+
+</div>

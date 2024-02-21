@@ -1,0 +1,25 @@
+@model Tarea
+@{
+    ViewData["Title"] = "Editar Tarea";
+}
+
+<div class="d-flex">
+    <h1 class='flex-grow-1'>
+        <i class="fas fa-business-time"></i>
+        @ViewData["Title"]
+    </h1>
+</div>
+<hr>
+
+<form asp-action="Editar" method="post">
+    
+    <input type="hidden" asp-for="Id"/>
+
+    <partial name="_Form"/>
+
+    <div class="form-group mt-5">
+        <a asp-action="Index" class="btn btn-light"> Cancelar</a>
+        <button type="submit" class="btn btn-primary"> Salvar</button>
+    </div>
+
+</form>
