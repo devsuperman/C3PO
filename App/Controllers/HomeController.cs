@@ -20,14 +20,15 @@ public class HomeController : Controller
     {
         var tasks = await _db.Tareas
             .AsNoTracking()
-            .OrderBy(o=>o.Inicio)
+            .OrderBy(o => o.Inicio)
             .Select(s => new TaskGantt
             {
                 Id = s.Id.ToString(),
                 Name = $"{s.Responsable} - {s.Titulo}",
                 Start = s.Inicio.ToString("yyyy-MM-dd"),
                 End = s.Fim.ToString("yyyy-MM-dd"),
-                Progress = 100
+                Progress = 100,
+                Dependencies = string.Join(", ", s.TareasPais.Select(p=>p.Id.ToString()).ToArray())
             })
             .ToListAsync();
 

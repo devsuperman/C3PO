@@ -1,4 +1,5 @@
-@model Tarea
+
+@model FormTarea
 
 <div class="mb-2">
     <label asp-for="Responsable"></label>
@@ -26,4 +27,11 @@
         <span asp-validation-for='Fim' class='text-danger'></span>
     </div>
 
+</div>
+
+<div class="mb-2">
+    <label asp-for="TareasDependentes"></label>
+    <select class="form-select choices" asp-for="TareasDependentes" asp-items='(MultiSelectList)ViewData["selectTareas"]'>
+    </select>
+    <span asp-validation-for='TareasDependentes' class='text-danger'></span>
 </div>
