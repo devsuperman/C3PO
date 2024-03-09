@@ -18,11 +18,10 @@ namespace App.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Descripcion = table.Column<string>(type: "text", nullable: false),
-                    HombreClave = table.Column<string>(type: "text", nullable: false),
-                    Telefono = table.Column<string>(type: "text", nullable: false),
-                    Inicio = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Fim = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Titulo = table.Column<string>(type: "text", nullable: false),
+                    Responsable = table.Column<string>(type: "text", nullable: false),
+                    Inicio = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Fim = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

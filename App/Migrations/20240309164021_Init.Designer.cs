@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240221221729_Init")]
+    [Migration("20240309164021_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace App.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "7.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -33,21 +33,17 @@ namespace App.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Descripcion")
+                    b.Property<DateTimeOffset>("Fim")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("Inicio")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Responsable")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Fim")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("HombreClave")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Inicio")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Telefono")
+                    b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("text");
 

@@ -25,7 +25,8 @@
     {
         <a class="list-group-item list-group-item-action d-flex" asp-action="Editar" asp-route-id="@item.Id">
             <span class='flex-grow-1'>
-                @item.Descripcion
+                @item.Responsable - @item.Titulo <br />
+                <small class="text-muted"> De @item.Inicio.Date.ToShortDateString() a @item.Fim.Date.ToShortDateString()</small>
             </span>            
         </a>
     }

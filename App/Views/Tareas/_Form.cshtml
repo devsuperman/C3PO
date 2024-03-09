@@ -1,24 +1,15 @@
 @model Tarea
 
-<div class="row">
-
-    <div class="col-md-8 mb-2">
-        <label asp-for="HombreClave"></label>
-        <input class="form-control" asp-for="HombreClave" required>
-        <span asp-validation-for='HombreClave' class='text-danger'></span>
-    </div>
-
-    <div class="col-md-4 mb-2">
-        <label asp-for="Telefono"></label>
-        <input class="form-control mask-phone" asp-for="Telefono" required>
-        <span asp-validation-for='Telefono' class='text-danger'></span>
-    </div>
+<div class="mb-2">
+    <label asp-for="Responsable"></label>
+    <input class="form-control" asp-for="Responsable" required>
+    <span asp-validation-for='Responsable' class='text-danger'></span>
 </div>
 
 <div class="mb-2">
-    <label asp-for="Descripcion"></label>
-    <textarea class="form-control" asp-for="Descripcion" required></textarea>
-    <span asp-validation-for='Descripcion' class='text-danger'></span>
+    <label asp-for="Titulo"></label>
+    <textarea class="form-control" asp-for="Titulo" required></textarea>
+    <span asp-validation-for='Titulo' class='text-danger'></span>
 </div>
 
 <div class='row'>

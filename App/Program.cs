@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using App.Extensions;
 using App.Data;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions { ContentRootPath = AppContext.BaseDirectory });
@@ -30,6 +31,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.UsarCulturaEspecifica("es-ES");
 
 var scope = app.Services.CreateScope();
 await DataHelper.ManageDataAsync(scope.ServiceProvider);

@@ -1,22 +1,37 @@
-using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using App.Models;
+using App.Data;
 
 namespace App.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly Contexto _db;
+    public HomeController(ILogger<HomeController> logger, Contexto db)
     {
         _logger = logger;
-        
+        _db = db;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var tasks = await _db.Tareas
+            .AsNoTracking()
+            .OrderBy(o=>o.Inicio)
+            .Select(s => new TaskGantt
+            {
+                Id = s.Id.ToString(),
+                Name = $"{s.Responsable} - {s.Titulo}",
+                Start = s.Inicio.ToString("yyyy-MM-dd"),
+                End = s.Fim.ToString("yyyy-MM-dd"),
+                Progress = 100
+            })
+            .ToListAsync();
+
+        return View(tasks);
     }
 
     public IActionResult Privacy()
