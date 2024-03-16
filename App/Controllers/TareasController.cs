@@ -63,7 +63,15 @@ namespace App.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Add(model);
+                var tarea = new Tarea
+                {
+                    Titulo = model.Titulo,
+                    Responsable = model.Responsable,
+                    Inicio = model.Inicio,
+                    Fim = model.Fim
+                };
+
+                _db.Add(tarea);
                 await _db.SaveChangesAsync();
 
                 return RedirectToAction("Index");
@@ -77,7 +85,7 @@ namespace App.Controllers
 
         public async Task<IActionResult> Editar(int id)
         {
-            var viewmodel = await _db.Tareas
+            var model = await _db.Tareas
                 .Where(w => w.Id == id)
                 .Select(s => new FormTarea
                 {
@@ -90,9 +98,9 @@ namespace App.Controllers
                 })
                 .FirstOrDefaultAsync();
 
-            await CarregarViewDatas(viewmodel.TareasDependentes, viewmodel.Id);
+            await CarregarViewDatas(model.TareasDependentes, model.Id);
 
-            return View(viewmodel);
+            return View(model);
         }
 
         [HttpPost]
