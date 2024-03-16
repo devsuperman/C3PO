@@ -24,12 +24,16 @@ public class HomeController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> Entrar(string senha)
+    public async Task<IActionResult> Entrar(string senha, string returnUrl)
     {
         if (senha != "8318")
             return View();
 
         await Logar();
+
+        if (!string.IsNullOrEmpty(returnUrl))
+            return Redirect(returnUrl);
+
         return RedirectToAction("Index");
     }
 
