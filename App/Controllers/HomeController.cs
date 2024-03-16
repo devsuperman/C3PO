@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -53,7 +52,6 @@ public class HomeController : Controller
     }
 
 
-    [Authorize]
     public async Task<IActionResult> Index()
     {
         var tasks = await _db.Tareas

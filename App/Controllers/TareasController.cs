@@ -8,7 +8,6 @@ using App.Data;
 
 namespace App.Controllers;
 
-[Authorize]
 public class TareasController : Controller
 {
     private readonly Contexto _db;
@@ -30,6 +29,7 @@ public class TareasController : Controller
         return View(model);
     }
 
+    [Authorize]
     public async Task<IActionResult> Criar()
     {
         await CarregarViewDatas();
@@ -59,6 +59,7 @@ public class TareasController : Controller
         ViewData["selectTareas"] = new MultiSelectList(tareas, "Id", "Nome", tareasDependentes);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Criar(FormTarea model)
     {
@@ -84,6 +85,7 @@ public class TareasController : Controller
         return View(ModelState);
     }
 
+    [Authorize] 
     public async Task<IActionResult> Editar(int id)
     {
         var model = await _db.Tareas
@@ -104,6 +106,7 @@ public class TareasController : Controller
         return View(model);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Editar(FormTarea model)
     {
