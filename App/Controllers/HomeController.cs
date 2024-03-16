@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Diagnostics;
 using App.Models;
 using App.Data;
@@ -16,6 +20,40 @@ public class HomeController : Controller
         _db = db;
     }
 
+    
+    public IActionResult Entrar() => View();
+
+
+    [HttpPost]
+    public async Task<IActionResult> Entrar(string senha)
+    {
+        if (senha != "8318")
+            return View();
+
+        await Logar();
+        return RedirectToAction("Index");
+    }
+
+    private async Task Logar()
+    {
+        var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, "Tiago"),
+                new Claim(ClaimTypes.NameIdentifier, "Tiago")
+            };
+
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var claimPrincipal = new ClaimsPrincipal(claimsIdentity);
+        var authProperties = new AuthenticationProperties { IsPersistent = true };
+
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            claimPrincipal,
+            authProperties);
+    }
+
+
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var tasks = await _db.Tareas
@@ -28,16 +66,11 @@ public class HomeController : Controller
                 Start = s.Inicio.ToString("yyyy-MM-dd"),
                 End = s.Fim.ToString("yyyy-MM-dd"),
                 Progress = 100,
-                Dependencies = string.Join(", ", s.TareasPais.Select(p=>p.Id.ToString()).ToArray())
+                Dependencies = string.Join(", ", s.TareasPais.Select(p => p.Id.ToString()).ToArray())
             })
             .ToListAsync();
 
         return View(tasks);
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using App.Extensions;
 using App.Data;
@@ -8,6 +9,16 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<Contexto>(options =>
     options.UseNpgsql(ConnectionHelper.GetConnectionString(builder.Configuration)));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(o =>
+                {
+                    o.LoginPath = "/Home/Entrar";
+                    o.ExpireTimeSpan = new System.TimeSpan(5, 0, 0, 0);
+                });
+
+builder.Services.AddAuthorization();
+
 
 var portVar = Environment.GetEnvironmentVariable("PORT");
 
