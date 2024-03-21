@@ -73,6 +73,12 @@ public class TareasController : Controller
                 Fim = model.Fim
             };
 
+            if (model.TareasDependentes.Any())
+            {
+                var tareasDEpendentes = await _db.Tareas.Where(w => model.TareasDependentes.Contains(w.Id)).ToListAsync();
+                tarea.AtribuirTareasDependentes(tareasDEpendentes);
+            }
+
             _db.Add(tarea);
             await _db.SaveChangesAsync();
 
@@ -85,7 +91,7 @@ public class TareasController : Controller
         return View(ModelState);
     }
 
-    [Authorize] 
+    [Authorize]
     public async Task<IActionResult> Editar(int id)
     {
         var model = await _db.Tareas
@@ -118,11 +124,8 @@ public class TareasController : Controller
 
             tarea.Atualizar(model.Titulo, model.Responsable, model.Inicio, model.Fim);
 
-            if (model.TareasDependentes.Any())
-            {
-                var listadoTareas = await _db.Tareas.Where(w => model.TareasDependentes.Contains(w.Id)).ToListAsync();
-                tarea.AtribuirTareasDependentes(listadoTareas);
-            }
+            var listadoTareas = await _db.Tareas.Where(w => model.TareasDependentes.Contains(w.Id)).ToListAsync();
+            tarea.AtribuirTareasDependentes(listadoTareas);
 
             _db.Update(tarea);
             await _db.SaveChangesAsync();
