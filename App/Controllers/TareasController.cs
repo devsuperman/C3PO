@@ -30,7 +30,7 @@ public class TareasController : Controller
     }
 
     [Authorize]
-    public async Task<IActionResult> Criar()
+    public async Task<IActionResult> Anadir()
     {
         await CarregarViewDatas();
         return View();
@@ -60,12 +60,12 @@ public class TareasController : Controller
 
 
         var listaColores = new string[]{
-            "Azul",
-            "Verde",
             "Amarillo",
+            "Azul",
             "Naranja",
+            "Purpura",
             "Rojo",
-            "Purpura"
+            "Verde"
         };
 
         ViewData["selectColores"] = new SelectList(listaColores, color);
@@ -73,7 +73,7 @@ public class TareasController : Controller
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Criar(FormTarea model)
+    public async Task<IActionResult> Anadir(FormTarea model)
     {
         if (ModelState.IsValid)
         {

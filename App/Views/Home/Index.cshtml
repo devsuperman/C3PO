@@ -1,12 +1,23 @@
 ﻿@model List<TaskGantt>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Início";
 }
 
-<h1>
-    <i class="bi bi-bar-chart-steps"></i>
-    Seguimiento de Tareas
-</h1>
+<div class="d-flex">
+
+    <h1 class="flex-grow-1">
+        <i class="bi bi-bar-chart-steps"></i>
+        Seguimiento de Tareas
+    </h1>
+
+    <div>
+        <a class="btn btn-primary" asp-action="Anadir" asp-controller="Tareas">
+            <i class="bi bi-list-task"></i> Añadir Tarea
+        </a>
+    </div>
+
+</div>
+
 
 <div>
     <svg id="gantt"></svg>
@@ -21,6 +32,8 @@
 </div>
 
 <input type="hidden" value='@Json.Serialize(Model)' id="jsonTareas" />
+
+
 
 @section scripts {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.min.css" integrity="sha512-b6CPl1eORfMoZgwWGEYWNxYv79KG0dALXfVu4uReZJOXAfkINSK4UhA0ELwGcBBY7VJN7sykwrCGQnbS8qTKhQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
