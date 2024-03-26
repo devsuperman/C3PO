@@ -3,3 +3,4 @@
 if (selectsChoices.length > 0) {
     const choices = new Choices(".choices");    
 }
+

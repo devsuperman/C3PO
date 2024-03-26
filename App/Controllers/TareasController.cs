@@ -145,17 +145,8 @@ public class TareasController : Controller
     }
 
 
-    public async Task<IActionResult> Deletar(int id)
-    {
-        var model = await _db.Tareas
-            .Include(i => i.Departamento)
-            .FirstOrDefaultAsync(w => w.Id == id);
-
-        return View(model);
-    }
-
     [HttpPost]
-    public async Task<IActionResult> DeletarPost(int id)
+    public async Task<IActionResult> Eliminar(int id)
     {
         var model = await _db.Tareas.FindAsync(id);
 
