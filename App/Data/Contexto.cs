@@ -9,5 +9,6 @@ public class Contexto : DbContext
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
-    public DbSet<Tarea> Tareas { get; set; } = default!;
+    public DbSet<Tarea> Tareas { get; set; }
+    public DbSet<Departamento> Departamentos { get; set; }
 }

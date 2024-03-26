@@ -8,6 +8,7 @@ using App.Data;
 
 namespace App.Controllers;
 
+[Authorize]
 public class TareasController : Controller
 {
     private readonly Contexto _db;
@@ -17,26 +18,25 @@ public class TareasController : Controller
         _db = db;
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Index()
     {
-        var lista = await _db.Tareas.OrderBy(o => o.Id).ToListAsync();
+        var lista = await _db.Tareas
+            .AsNoTrackingWithIdentityResolution()
+            .Include(a => a.Departamento)
+            .OrderBy(o => o.Id)
+            .ToListAsync();
+
         return View(lista);
     }
 
-    public async Task<IActionResult> Detalhes(int? id)
-    {
-        var model = await _db.Tareas.FindAsync(id);
-        return View(model);
-    }
-
-    [Authorize]
     public async Task<IActionResult> Anadir()
     {
         await CarregarViewDatas();
         return View();
     }
 
-    private async Task CarregarViewDatas(List<int> tareasDependentes = null, int removerTareaId = 0, string color = "")
+    private async Task CarregarViewDatas(List<int> tareasDependentes = null, int removerTareaId = 0, int departamentoId = 0)
     {
         tareasDependentes ??= new List<int>();
 
@@ -46,9 +46,19 @@ public class TareasController : Controller
             .Select(s => new
             {
                 s.Id,
-                Nome = $"{s.Responsable} - {s.Titulo} - {s.Inicio:d} ate {s.Fim:d}"
+                Nombre = $"{s.Departamento.Nombre} - {s.Titulo} - {s.Inicio:d} ate {s.Fim:d}"
             })
             .ToListAsync();
+
+        var listaDepartamentos = await _db.Departamentos
+        .AsNoTracking()
+        .OrderBy(o => o.Nombre)
+        .Select(s => new
+        {
+            s.Id,
+            s.Nombre
+        })
+        .ToListAsync();
 
         if (removerTareaId > 0)
         {
@@ -56,22 +66,10 @@ public class TareasController : Controller
             tareas.Remove(t);
         }
 
-        ViewData["selectTareas"] = new MultiSelectList(tareas, "Id", "Nome", tareasDependentes);
-
-
-        var listaColores = new string[]{
-            "Amarillo",
-            "Azul",
-            "Naranja",
-            "Purpura",
-            "Rojo",
-            "Verde"
-        };
-
-        ViewData["selectColores"] = new SelectList(listaColores, color);
+        ViewData["selectTareas"] = new MultiSelectList(tareas, "Id", "Nombre", tareasDependentes);
+        ViewData["selectDepartamentos"] = new SelectList(listaDepartamentos, "Id", "Nombre", departamentoId);
     }
 
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Anadir(FormTarea model)
     {
@@ -80,10 +78,9 @@ public class TareasController : Controller
             var tarea = new Tarea
             {
                 Titulo = model.Titulo,
-                Responsable = model.Responsable,
+                DepartamentoId = model.DepartamentoId,
                 Inicio = model.Inicio,
-                Fim = model.Fim,
-                Color = model.Color
+                Fim = model.Fim
             };
 
             if (model.TareasDependentes.Any())
@@ -98,13 +95,11 @@ public class TareasController : Controller
             return RedirectToAction("Index");
         }
 
+        await CarregarViewDatas(model.TareasDependentes, 0, model.DepartamentoId);
 
-        await CarregarViewDatas(model.TareasDependentes, 0, model.Color);
-
-        return View(ModelState);
+        return View(model);
     }
 
-    [Authorize]
     public async Task<IActionResult> Editar(int id)
     {
         var model = await _db.Tareas
@@ -115,18 +110,16 @@ public class TareasController : Controller
                 Inicio = s.Inicio,
                 Fim = s.Fim,
                 Titulo = s.Titulo,
-                Responsable = s.Responsable,
-                Color = s.Color,
+                DepartamentoId = s.DepartamentoId,
                 TareasDependentes = s.TareasPais.Select(p => p.Id).ToList()
             })
             .FirstOrDefaultAsync();
 
-        await CarregarViewDatas(model.TareasDependentes, model.Id, model.Color);
+        await CarregarViewDatas(model.TareasDependentes, model.Id, model.DepartamentoId);
 
         return View(model);
     }
 
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Editar(FormTarea model)
     {
@@ -136,7 +129,7 @@ public class TareasController : Controller
                 .Include(w => w.TareasPais)
                 .SingleOrDefaultAsync(s => s.Id == model.Id);
 
-            tarea.Atualizar(model.Titulo, model.Responsable, model.Inicio, model.Fim, model.Color);
+            tarea.Atualizar(model.Titulo, model.DepartamentoId, model.Inicio, model.Fim);
 
             var listadoTareas = await _db.Tareas.Where(w => model.TareasDependentes.Contains(w.Id)).ToListAsync();
             tarea.AtribuirTareasDependentes(listadoTareas);
@@ -147,13 +140,22 @@ public class TareasController : Controller
             return RedirectToAction("Index");
         }
 
-        await CarregarViewDatas(model.TareasDependentes, model.Id, model.Color);
+        await CarregarViewDatas(model.TareasDependentes, model.Id, model.DepartamentoId);
         return View(model);
     }
 
 
-    [HttpPost]
     public async Task<IActionResult> Deletar(int id)
+    {
+        var model = await _db.Tareas
+            .Include(i => i.Departamento)
+            .FirstOrDefaultAsync(w => w.Id == id);
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeletarPost(int id)
     {
         var model = await _db.Tareas.FindAsync(id);
 

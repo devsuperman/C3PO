@@ -1,14 +1,16 @@
 @model FormTarea
 
 <div class="mb-2">
-    <label asp-for="Responsable"></label>
-    <input class="form-control" asp-for="Responsable" required>
-    <span asp-validation-for='Responsable' class='text-danger'></span>
+    <label asp-for="DepartamentoId"></label>
+    <select class="form-select" asp-for="DepartamentoId" asp-items='(SelectList)ViewData["selectDepartamentos"]'>
+        <option value="">Seleccionar</option>
+    </select>
+    <span asp-validation-for='DepartamentoId' class='text-danger'></span>
 </div>
 
 <div class="mb-2">
     <label asp-for="Titulo"></label>
-    <textarea class="form-control" asp-for="Titulo" required></textarea>
+    <input class="form-control" asp-for="Titulo" required/>
     <span asp-validation-for='Titulo' class='text-danger'></span>
 </div>
 
@@ -26,14 +28,6 @@
         <span asp-validation-for='Fim' class='text-danger'></span>
     </div>
 
-</div>
-
-<div class="mb-2">
-    <label asp-for="Color"></label>
-    <select class="form-select" asp-for="Color" asp-items='(SelectList)ViewData["selectColores"]'>
-        <option value="">Seleccionar</option>
-    </select>
-    <span asp-validation-for='Color' class='text-danger'></span>
 </div>
 
 <div class="mb-2">

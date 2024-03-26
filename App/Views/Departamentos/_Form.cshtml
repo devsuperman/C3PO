@@ -1,0 +1,15 @@
+@model Departamento
+
+<div class="mb-2">
+    <label asp-for="Nombre"></label>
+    <input class="form-control" asp-for="Nombre" required/>
+    <span asp-validation-for='Nombre' class='text-danger'></span>
+</div>
+
+<div class="mb-2">
+    <label asp-for="Color"></label>
+    <select class="form-select" asp-for="Color" asp-items='(SelectList)ViewData["selectColores"]' required>
+        <option value="">Seleccionar</option>
+    </select>
+    <span asp-validation-for='Color' class='text-danger'></span>
+</div>

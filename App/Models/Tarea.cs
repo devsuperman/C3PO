@@ -12,11 +12,6 @@ public class Tarea
     public string Titulo { get; set; } = string.Empty;
 
 
-    [Required(ErrorMessage = "Campo obligatorio"), MinLength(3)]
-    [Display(Name = "Responsable")]
-    public string Responsable { get; set; } = string.Empty;
-
-
     [Required(ErrorMessage = "Campo obligatorio"), DataType(DataType.Date)]
     public DateTimeOffset Inicio { get; set; } = DateTimeOffset.Now;
 
@@ -30,15 +25,16 @@ public class Tarea
 
     [InverseProperty("TareasPais")]
     public List<Tarea> TareasHijas { get; set; } = new List<Tarea>();
-    public string Color { get; internal set; }
 
-    public void Atualizar(string titulo, string responsable, DateTimeOffset inicio, DateTimeOffset fim, string color)
+    public int DepartamentoId { get; set; }
+    public Departamento Departamento { get; set; }
+
+    public void Atualizar(string titulo, int departamentoId, DateTimeOffset inicio, DateTimeOffset fim)
     {
         this.Titulo = titulo;
-        this.Responsable = responsable;
+        this.DepartamentoId = departamentoId;
         this.Inicio = inicio;
         this.Fim = fim;
-        this.Color = color;
     }
 
     public void AtribuirTareasDependentes(List<Tarea> listadoTareas)

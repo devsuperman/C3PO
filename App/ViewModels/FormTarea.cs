@@ -11,9 +11,9 @@ public class FormTarea
     public string Titulo { get; set; } = string.Empty;
 
 
-    [Required(ErrorMessage = "Campo obligatorio"), MinLength(3)]
-    [Display(Name = "Responsable")]
-    public string Responsable { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Campo obligatorio")]
+    [Display(Name = "Departamento")]
+    public int DepartamentoId { get; set; }
 
 
     [Required(ErrorMessage = "Campo obligatorio"), DataType(DataType.Date)]
@@ -22,8 +22,6 @@ public class FormTarea
 
     [Required(ErrorMessage = "Campo obligatorio"), DataType(DataType.Date)]
     public DateTimeOffset Fim { get; set; } = DateTimeOffset.Now;
-
-    public string Color { get; set; }
 
     [Display(Name = "Tareas Dependentes")]
     public List<int> TareasDependentes { get; set; } = new List<int>();
