@@ -3,17 +3,27 @@
     ViewData["Title"] = "Início";
 }
 
-<div class="d-flex">
+<div class="row">
 
-    <h1 class="flex-grow-1">
+    <h1 class="col-md-6 mb-2">
         <i class="bi bi-bar-chart-steps"></i>
         Seguimiento de Tareas
     </h1>
 
-    <div>
-        <a class="btn btn-primary" asp-action="Anadir" asp-controller="Tareas">
-            <i class="bi bi-list-task"></i> Añadir Tarea
-        </a>
+    <div class="col-md-6 d-flex justify-content-end mb-2">
+        <form>
+            <select class="form-select" name="departamentoId" asp-items='@(SelectList)ViewData["selectDepartamentos"]'
+                onchange='this.closest("form").submit()'>
+                <option value="0">Todos</option>
+            </select>
+        </form>
+
+        <div class="ms-2">
+            <a class="btn btn-primary" asp-action="Anadir" asp-controller="Tareas">
+                <i class="bi bi-list-task"></i> Añadir Tarea
+            </a>
+        </div>
+
     </div>
 
 </div>
@@ -33,10 +43,12 @@
 
 <input type="hidden" value='@Json.Serialize(Model)' id="jsonTareas" />
 
-
-
 @section scripts {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.min.css" integrity="sha512-b6CPl1eORfMoZgwWGEYWNxYv79KG0dALXfVu4uReZJOXAfkINSK4UhA0ELwGcBBY7VJN7sykwrCGQnbS8qTKhQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.min.js" integrity="sha512-HyGTvFEibBWxuZkDsE2wmy0VQ0JRirYgGieHp0pUmmwyrcFkAbn55kZrSXzCgKga04SIti5jZQVjbTSzFpzMlg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.min.css"
+        integrity="sha512-b6CPl1eORfMoZgwWGEYWNxYv79KG0dALXfVu4uReZJOXAfkINSK4UhA0ELwGcBBY7VJN7sykwrCGQnbS8qTKhQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.min.js"
+        integrity="sha512-HyGTvFEibBWxuZkDsE2wmy0VQ0JRirYgGieHp0pUmmwyrcFkAbn55kZrSXzCgKga04SIti5jZQVjbTSzFpzMlg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/gantt.js" asp-append-version="true"></script>
 }

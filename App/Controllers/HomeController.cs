@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Diagnostics;
 using App.Models;
 using App.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace App.Controllers;
 
@@ -19,7 +20,7 @@ public class HomeController : Controller
         _db = db;
     }
 
-    
+
     public IActionResult Entrar() => View();
 
 
@@ -56,11 +57,24 @@ public class HomeController : Controller
     }
 
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int departamentoId = 0)
     {
-        var tasks = await _db.Tareas
+        var listaDepartamentos = await _db.Departamentos
+            .AsNoTracking()
+            .OrderBy(o => o.Nombre)
+            .ToListAsync();
+
+        ViewData["selectDepartamentos"] = new SelectList(listaDepartamentos, "Id", "Nombre", departamentoId);
+
+        var query = _db.Tareas
             .AsNoTracking()
             .OrderBy(o => o.Inicio)
+            .AsQueryable();
+
+        if (departamentoId > 0)
+            query = query.Where(w => w.DepartamentoId == departamentoId);
+
+        var lista = await query
             .Select(s => new TaskGantt
             {
                 Id = s.Id.ToString(),
@@ -73,7 +87,7 @@ public class HomeController : Controller
             })
             .ToListAsync();
 
-        return View(tasks);
+        return View(lista);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
