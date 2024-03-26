@@ -36,7 +36,7 @@ public class TareasController : Controller
         return View();
     }
 
-    private async Task CarregarViewDatas(List<int> tareasDependentes = null, int removerTareaId = 0)
+    private async Task CarregarViewDatas(List<int> tareasDependentes = null, int removerTareaId = 0, string color = "")
     {
         tareasDependentes ??= new List<int>();
 
@@ -57,6 +57,18 @@ public class TareasController : Controller
         }
 
         ViewData["selectTareas"] = new MultiSelectList(tareas, "Id", "Nome", tareasDependentes);
+
+
+        var listaColores = new string[]{
+            "Azul",
+            "Verde",
+            "Amarillo",
+            "Naranja",
+            "Rojo",
+            "Purpura"
+        };
+
+        ViewData["selectColores"] = new SelectList(listaColores, color);
     }
 
     [Authorize]
@@ -70,7 +82,8 @@ public class TareasController : Controller
                 Titulo = model.Titulo,
                 Responsable = model.Responsable,
                 Inicio = model.Inicio,
-                Fim = model.Fim
+                Fim = model.Fim,
+                Color = model.Color
             };
 
             if (model.TareasDependentes.Any())
@@ -86,7 +99,7 @@ public class TareasController : Controller
         }
 
 
-        await CarregarViewDatas();
+        await CarregarViewDatas(model.TareasDependentes, 0, model.Color);
 
         return View(ModelState);
     }
@@ -103,11 +116,12 @@ public class TareasController : Controller
                 Fim = s.Fim,
                 Titulo = s.Titulo,
                 Responsable = s.Responsable,
+                Color = s.Color,
                 TareasDependentes = s.TareasPais.Select(p => p.Id).ToList()
             })
             .FirstOrDefaultAsync();
 
-        await CarregarViewDatas(model.TareasDependentes, model.Id);
+        await CarregarViewDatas(model.TareasDependentes, model.Id, model.Color);
 
         return View(model);
     }
@@ -122,7 +136,7 @@ public class TareasController : Controller
                 .Include(w => w.TareasPais)
                 .SingleOrDefaultAsync(s => s.Id == model.Id);
 
-            tarea.Atualizar(model.Titulo, model.Responsable, model.Inicio, model.Fim);
+            tarea.Atualizar(model.Titulo, model.Responsable, model.Inicio, model.Fim, model.Color);
 
             var listadoTareas = await _db.Tareas.Where(w => model.TareasDependentes.Contains(w.Id)).ToListAsync();
             tarea.AtribuirTareasDependentes(listadoTareas);
@@ -133,7 +147,7 @@ public class TareasController : Controller
             return RedirectToAction("Index");
         }
 
-        await CarregarViewDatas(model.TareasDependentes, model.Id);
+        await CarregarViewDatas(model.TareasDependentes, model.Id, model.Color);
         return View(model);
     }
 

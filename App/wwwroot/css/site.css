@@ -8,7 +8,11 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
@@ -19,4 +23,45 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.gantt .Rojo .bar {
+  fill: red;
+}
+
+.gantt .Azul .bar {
+  fill: blue;
+}
+
+.gantt .Amarillo .bar {
+  fill: yellow;
+}
+
+.gantt .bar .bar-label {
+  font-weight: 700;
+}
+
+
+.gantt .bar-label {
+  font-weight: bold;
+}
+
+.gantt .Amarillo .bar-label{
+  fill: black;
+}
+
+.gantt .Naranja .bar-label{
+  fill: black;
+}
+
+.gantt .Verde .bar {
+  fill: green;
+}
+
+.gantt .Naranja .bar {
+  fill: orange;
+}
+
+.gantt .Purpura .bar {
+  fill: purple;
 }

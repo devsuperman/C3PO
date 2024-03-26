@@ -30,13 +30,15 @@ public class Tarea
 
     [InverseProperty("TareasPais")]
     public List<Tarea> TareasHijas { get; set; } = new List<Tarea>();
+    public string Color { get; internal set; }
 
-    public void Atualizar(string titulo, string responsable, DateTimeOffset inicio, DateTimeOffset fim)
+    public void Atualizar(string titulo, string responsable, DateTimeOffset inicio, DateTimeOffset fim, string color)
     {
         this.Titulo = titulo;
         this.Responsable = responsable;
         this.Inicio = inicio;
         this.Fim = fim;
+        this.Color = color;
     }
 
     public void AtribuirTareasDependentes(List<Tarea> listadoTareas)

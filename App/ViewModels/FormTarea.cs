@@ -23,6 +23,9 @@ public class FormTarea
     [Required(ErrorMessage = "Campo obligatorio"), DataType(DataType.Date)]
     public DateTimeOffset Fim { get; set; } = DateTimeOffset.Now;
 
+    [Required(ErrorMessage = "Campo obligatorio")]
+    public string Color { get; set; }
+
     [Display(Name = "Tareas Dependentes")]
     public List<int> TareasDependentes { get; set; } = new List<int>();
 }
