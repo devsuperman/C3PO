@@ -60,7 +60,8 @@ public class HomeController : Controller
     {
         var tasks = await _db.Tareas
             .AsNoTracking()
-            .OrderBy(o => o.Inicio)
+            .OrderBy(o => o.Responsable)
+                .ThenBy(o => o.Inicio)
             .Select(s => new TaskGantt
             {
                 Id = s.Id.ToString(),
